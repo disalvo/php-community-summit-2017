@@ -27,12 +27,18 @@
 			<div class="slides">
 
 				<section>
-					<h3>all <small>bake</small></h3>
+					<h3>Shell <small>bake</small></h3>
 
-					<h5>Gerando uma aplicação inteira!</h5>
-					<pre><code data-trim data-noescape>
+					<p>Framework para construção de aplicações via console</p>
+
+					<p>Reutiliza classes já desenvolvidas para a web</p>
+
+					<p>Ideal para uso em cron jobs ou utilitários em linha de comando.</p>
+
+					<!--<pre><code data-trim data-noescape>
 					$> bin/cake bake all despesas
-					</code></pre>
+					</code></pre>-->
+
 				</section>
 
 				<section>
@@ -294,6 +300,24 @@ class CreateDespesas extends AbstractMigration
 					<pre><code data-trim data-noescape>
 					$> bin/cake migrations rollback
 					</code></pre>
+				</section>
+
+				<section>
+					<h3>all <small>bake</small></h3>
+
+					<h5>Gerando um crud inteiro!</h5>
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake all despesas
+					</code></pre>
+
+					<h6>ou, partes ...</h6>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake controller
+					$> bin/cake bake model
+					$> bin/cake bake template
+					</code></pre>
+
 				</section>
 
 			</div>
