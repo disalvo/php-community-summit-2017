@@ -27,24 +27,12 @@
 			<div class="slides">
 
 				<section>
-					<h3>Migrations <small>bake</small></h3>
+					<h3>all <small>bake</small></h3>
 
-					<h4>Instalação</h4>
-
-					<pre><code  data-trim data-noescape>
-						$> composer require cakephp/migrations "@stable"
-
-						$> bin/cake plugin load Migrations
-
-						/home/disalvo/projetos/meu-projeto/config/bootstrap.php modified
+					<h5>Gerando uma aplicação inteira!</h5>
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake all despesas
 					</code></pre>
-
-				</section>
-
-
-				<section>
-					<h3>Console</h3>
-
 				</section>
 
 				<section>
@@ -122,6 +110,190 @@
 					<h3>Bake <small>Geração de código</small></h3>
 
 					<span>Deve haver pelo menos um banco de dados configurado</span>
+				</section>
+
+				<section>
+					<h3>Migrations <small>bake</small></h3>
+
+					<h4>Instalação</h4>
+
+					<pre><code data-trim data-noescape>
+						$> composer require cakephp/migrations "@stable"
+
+						$> bin/cake plugin load Migrations
+
+						/home/disalvo/projetos/meu-projeto/config/bootstrap.php modified
+					</code></pre>
+
+					Funcionalidades providas pelo projeto Phinx
+					https://phinx.org/
+				</section>
+
+				<section>
+					<h3>Migrations <small>bake</small></h3>
+
+					<pre><code data-trim data-noescape>
+						$> bin/cake bake migration CreateDespesas
+							despesa:string
+							valor:float
+							data:date
+							created modified
+
+						$> Creating file /home/disalvo/projetos/meu-projeto/config/
+						Migrations/20170831215049_CreateDespesas.php
+						Wrote `/home/disalvo/projetos/meu-projeto/config/Migrations/
+						20170831215049_CreateDespesas.php`
+					</code></pre>
+
+					<small>O campo "id" (primary key) não precisa ser informado.</small>
+
+				</section>
+
+				<section class="codigo-migration">
+					<pre><code data-trim data-noescape>
+class CreateDespesas extends AbstractMigration
+{
+    public function change()
+    {
+        $table = $this->table('despesas');
+        $table->addColumn('despesa', 'string', [
+            'default' => null,
+            'limit' => 255,
+            'null' => false,
+        ]);
+        $table->addColumn('valor', 'decimal', [
+            'default' => null,
+            'null' => false,
+        ]);
+        $table->addColumn('data', 'date', [
+            'default' => null,
+            'null' => false,
+        ]);
+        $table->addColumn('created', 'datetime', [
+            'default' => null,
+            'null' => false,
+        ]);
+        $table->addColumn('modified', 'datetime', [
+            'default' => null,
+            'null' => false,
+        ]);
+        $table->create();
+    }
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Nome dos arquivos</h5>
+
+					<ul class="lista-nomes-migrations">
+						<li><strong>(/^(Create)(.*)/)</strong> - Criação de tabela</li>
+						<li><strong>(/^(Drop)(.*)/)</strong> - Exclusão de tabela</li>
+						<li><strong>(/^(Add).*(?:To)(.*)/)</strong> - Add. de campos</li>
+						<li><strong>(/^(Remove).*(?:From)(.*)/)</strong> - Rm. de campos</li>
+						<li><strong>(/^(Alter)(.*)/)</strong> - Altera tabela</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Definição dos campos</h5>
+
+					<pre><code data-trim data-noescape>
+						fieldName:fieldType?[length]:indexType:indexName
+					</code></pre>
+
+					<div class="definicao-campos">
+						despesa:string? <br />
+						despesa:string:unique <br />
+						despesa:string?[50] <br />
+						despesa:string:unique:DESPESA_INDEX <br />
+						despesa:string[120]:unique:DESPESA_INDEX <br />
+					</div>
+				</section>
+
+				<section>
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Tipos</h5>
+
+					<div class="tipos">
+						string
+						text
+						integer
+						biginteger
+						float
+						decimal
+						datetime
+						timestamp
+						time
+						date
+						binary
+						boolean
+						uuid
+					</div>
+				</section>
+
+				<section class="migration-modificando">
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Modificando uma tabela existente</h5>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake migration AddDescricaoToDespesas descricao:text?
+					</code></pre>
+
+					<pre><code data-trim data-noescape>
+						class AddDescricaoToDespesas extends AbstractMigration
+						{
+							public function change()
+							{
+								$table = $this->table('despesas');
+								$table->addColumn('descricao', 'text', [
+									'default' => null,
+									'null' => true,
+								]);
+								$table->update();
+							}
+						}
+					</code></pre>
+				</section>
+
+				<section class="migration-modificando">
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Excluindo um campo de tabela existente</h5>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake migration RemoveDescricaoFromDespesas descricao
+					</code></pre>
+				</section>
+
+				<section class="migration-modificando">
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Gerar migration de um banco de dados</h5>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake migration_snapshot Initial
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Aplicando</h5>
+					<pre><code data-trim data-noescape>
+					$> bin/cake migrations migrate
+					</code></pre>
+
+					<h5>Revertendo</h5>
+					<pre><code data-trim data-noescape>
+					$> bin/cake migrations rollback
+					</code></pre>
 				</section>
 
 			</div>

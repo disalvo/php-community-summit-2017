@@ -7,3 +7,30 @@
 .reveal .logo-capa {
     width: 30%;
 }
+
+.codigo-migration {
+    top: 0px !important;
+    padding: 0 !important;
+}
+
+.codigo-migration pre code {
+    max-height: 560px !important;
+}
+
+.lista-nomes-migrations li {
+    font-size: 30px;
+}
+
+.definicao-campos {
+    margin: 30px 40px !important;
+    text-align: left;
+    font-size: 30px !important;
+}
+
+.tipos {
+    font-size: 35px !important;
+}
+
+.migration-modificando pre code {
+    font-size: 21px !important;
+}
