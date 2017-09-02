@@ -25,22 +25,6 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-
-				<section>
-					<h3>Shell <small>bake</small></h3>
-
-					<p>Framework para construção de aplicações via console</p>
-
-					<p>Reutiliza classes já desenvolvidas para a web</p>
-
-					<p>Ideal para uso em cron jobs ou utilitários em linha de comando.</p>
-
-					<!--<pre><code data-trim data-noescape>
-					$> bin/cake bake all despesas
-					</code></pre>-->
-
-				</section>
-
 				<section>
 					<h2>
 						Desenvolva ainda melhor, mais simples e mais rápido com
@@ -51,7 +35,9 @@
 
 				<section class="bio">
 					<h3>Alexandre <strong>Di Salvo</strong></h3>
-					<ul class="bio-apresentacao">
+					<ul class="lista-apresentacao">
+						<li>Formado em Ciência da Computação</li>
+						<li>MBA em Gestão de Projetos</li>
 						<li>Desenvolvedor Sênior na Dcide</li>
 						<li>Trabalha com PHP desde 2008</li>
 						<li>CakePHP, Laravel, Zend [1, 2 e Expressive] e CodeIgniter</li>
@@ -60,7 +46,6 @@
 
 				<section>
 					<h3>CakePHP</h3>
-
 					<ul>
 						<li><strong>Versão atual: 3.5.1 [stable]</strong></li>
 						<li>PHP 7.1 (mínimo 5.6)</li>
@@ -97,7 +82,7 @@
 				</section>
 
 				<section>
-					<h3>Bake <small>Geração de código</small></h3>
+					<h3>Bake</h3>
 
 					Códigos funcionais e não somente esqueletos.
 
@@ -113,9 +98,45 @@
 				</section>
 
 				<section>
-					<h3>Bake <small>Geração de código</small></h3>
+					<h3>Bake</h3>
 
 					<span>Deve haver pelo menos um banco de dados configurado</span>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake
+					</code></pre>
+
+				</section>
+
+				<section>
+					<h3>Bake</h3>
+
+					<h5>Configurando a conexão com banco de dados</h5>
+
+					<pre><code data-trim data-noescape>
+					// config/app.php
+					'Datasources' => [
+						'default' => [
+							'className' => 'Cake\Database\Connection',
+							'driver' => 'Cake\Database\Driver\Mysql',
+							'persistent' => false,
+							'host' => 'localhost',
+							//'port' => 'non_standard_port_number',
+							'username' => 'root',
+							'password' => 'root',
+							'database' => 'despesas',
+							'encoding' => 'utf8',
+							'timezone' => 'UTC',
+							'flags' => [],
+							'cacheMetadata' => true,
+							'log' => false,
+							'quoteIdentifiers' => false,
+							//'init' => ['SET GLOBAL innodb_stats_on_metadata = 0'],
+							'url' => env('DATABASE_URL', null),
+						],
+						...
+					</code></pre>
+
 				</section>
 
 				<section>
@@ -157,6 +178,7 @@
 
 				<section class="codigo-migration">
 					<pre><code data-trim data-noescape>
+// config/Migrations/20170831220245_CreateDespesas.php
 class CreateDespesas extends AbstractMigration
 {
     public function change()
@@ -212,13 +234,13 @@ class CreateDespesas extends AbstractMigration
 						fieldName:fieldType?[length]:indexType:indexName
 					</code></pre>
 
-					<div class="definicao-campos">
-						despesa:string? <br />
-						despesa:string:unique <br />
-						despesa:string?[50] <br />
-						despesa:string:unique:DESPESA_INDEX <br />
-						despesa:string[120]:unique:DESPESA_INDEX <br />
-					</div>
+					<pre><code data-trim data-noescape>
+					despesa:string?
+					despesa:string:unique
+					despesa:string?[50]
+					despesa:string:unique:DESPESA_INDEX
+					despesa:string[120]:unique:DESPESA_INDEX
+					</code></pre>
 				</section>
 
 				<section>
@@ -253,6 +275,7 @@ class CreateDespesas extends AbstractMigration
 					</code></pre>
 
 					<pre><code data-trim data-noescape>
+						// config/Migrations/20170831233515_AddDescricaoToDespesas.php
 						class AddDescricaoToDespesas extends AbstractMigration
 						{
 							public function change()
@@ -276,16 +299,21 @@ class CreateDespesas extends AbstractMigration
 					<pre><code data-trim data-noescape>
 					$> bin/cake bake migration RemoveDescricaoFromDespesas descricao
 					</code></pre>
-				</section>
-
-				<section class="migration-modificando">
-					<h3>Migrations <small>bake</small></h3>
-
-					<h5>Gerar migration de um banco de dados</h5>
 
 					<pre><code data-trim data-noescape>
-					$> bin/cake bake migration_snapshot Initial
+					// config/Migrations/20170831234221_RemoveDescricaoFromDespesas.php
+					class RemoveDescricaoFromDespesas extends AbstractMigration
+					{
+						public function change()
+						{
+							$table = $this->table('despesas');
+							$table->removeColumn('descricao');
+							$table->update();
+						}
+					}
 					</code></pre>
+
+
 				</section>
 
 				<section>
@@ -299,6 +327,16 @@ class CreateDespesas extends AbstractMigration
 					<h5>Revertendo</h5>
 					<pre><code data-trim data-noescape>
 					$> bin/cake migrations rollback
+					</code></pre>
+				</section>
+
+				<section class="migration-modificando">
+					<h3>Migrations <small>bake</small></h3>
+
+					<h5>Gerar migration de um banco de dados</h5>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake bake migration_snapshot Initial
 					</code></pre>
 				</section>
 
@@ -318,6 +356,149 @@ class CreateDespesas extends AbstractMigration
 					$> bin/cake bake template
 					</code></pre>
 
+				</section>
+
+				<section class="crud-despesas">
+					<img src="images/crud_despesas.png" alt="">
+				</section>
+
+				<section class="crud-despesas">
+					<img src="images/cadastro_despesa.png" alt="">
+				</section>
+
+				<section class="crud-despesas">
+					<img src="images/visualizacao_despesas.png" alt="">
+				</section>
+
+				<section>
+					<h3>Shell <small>bake</small></h3>
+
+					<h6>Framework para construção de aplicações via console</h6>
+
+					<h6>É possível reutilizar classes já desenvolvidas para a web</h6>
+
+					<h6>Ideal para uso em cron jobs ou utilitários em linha de comando.</h6>
+
+					<!--<pre><code data-trim data-noescape>
+					$> bin/cake bake all despesas
+					</code></pre>-->
+				</section>
+
+				<section>
+					<h3>Shell <small>bake</small></h3>
+
+					<h5>Exemplo de shell</h5>
+
+					<pre><code data-trim data-noescape>
+					// src/Shell/ExemploShell.php
+					namespace App\Shell;
+
+					use Cake\Console\Shell;
+
+					class ExemploShell extends Shell
+					{
+						public function main()
+						{
+							$this->out('Esta é uma shell!');
+						}
+					}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Shell <small>bake</small></h3>
+
+					<h5>Exemplo de shell</h5>
+
+					<pre><code data-trim data-noescape>
+					$ bin/cake exemplo
+					Esta é uma shell!
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Shell <small>bake</small></h3>
+
+					<h5>Exemplo de shell [2]</h5>
+
+					<pre><code data-trim data-noescape>
+
+					// .. código
+
+					public function outroMetodo ($texto = null)
+					{
+						$this->out('outroMetodo() -> texto = ' . $texto);
+					}
+					</code></pre>
+
+					<pre><code data-trim data-noescape>
+					$> bin/cake exemplo outroMetodo "Exemplo"
+					outroMetodo() -> texto = Exemplo
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Shell <small>bake</small></h3>
+
+					<pre><code data-trim data-noescape>
+					namespace App\Shell;
+
+					use Cake\Console\Shell;
+					use Cake\ORM\TableRegistry;
+
+					class AtualizaCategoriaDespesaShell extends Shell
+					{
+						public function initialize()
+						{
+							parent::initialize();
+							$this->loadModel('Despesas');
+						}
+
+						public function main()
+						{
+							$despesasTable = TableRegistry::get('Despesas');
+							$despesas = $this->Despesas->find()->all();
+
+							foreach($despesas as $despesa) {
+								if ($despesa->despesa === 'Cartão de crédito') {
+									$despesa->categoria_id = 1;
+								} else {
+									$despesa->categoria_id = 2;
+								}
+
+								$despesasTable->save($despesa);
+								$this->out("Ok! ID:{$despesa->id} | DESPESA: {$despesa->despesa}");
+							}
+						}
+					}
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Shell <small>bake</small></h3>
+
+					<pre><code data-trim data-noescape>
+					$ bin/cake atualiza_categoria_despesa
+					Ok! ID:1 | DESPESA: Cartão de crédito
+					Ok! ID:2 | DESPESA: Cartão de crédito
+					Ok! ID:3 | DESPESA: Cartão de crédito
+					Ok! ID:4 | DESPESA: Cartão de crédito
+					Ok! ID:5 | DESPESA: Cartão de crédito
+					Ok! ID:6 | DESPESA: Cartão de crédito
+					Ok! ID:7 | DESPESA: Cartão de crédito
+					Ok! ID:8 | DESPESA: Combustível
+					Ok! ID:9 | DESPESA: Cartão de crédito
+					Ok! ID:10 | DESPESA: Cartão de crédito
+					Ok! ID:11 | DESPESA: Cartão de crédito
+					Ok! ID:12 | DESPESA: Combustível
+					Ok! ID:13 | DESPESA: Cartão de crédito
+					Ok! ID:14 | DESPESA: Cartão de crédito
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Obrigado!</h3>
 				</section>
 
 			</div>

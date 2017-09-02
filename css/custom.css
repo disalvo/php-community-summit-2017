@@ -8,6 +8,13 @@
     width: 30%;
 }
 
+.bio .lista-apresentacao {
+    font-size: 35px;
+    text-align: right;
+    list-style: none;
+    font-weight: 300;
+}
+
 .codigo-migration {
     top: 0px !important;
     padding: 0 !important;
@@ -34,3 +41,9 @@
 .migration-modificando pre code {
     font-size: 21px !important;
 }
+
+/*
+.crud-despesas {
+    background-image: url("../images/crud_despesas.png");
+    background-repeat: no-repeat;
+}*/
